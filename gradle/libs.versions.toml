@@ -8,6 +8,19 @@ espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.3"
 activity-compose = "1.9.0"
 compose-bom = "2023.08.00"
+androidxHiltNavigationCompose = "1.2.0"
+kotlinxCoroutines = "1.8.0"
+composeNavigation = "2.8.0-beta05"
+coil = "2.6.0"
+androidxLifecycle = "2.8.3"
+exoplayer = "1.3.1"
+
+
+
+
+# @keep
+hilt = "2.44.2"
+hiltExt = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -24,8 +37,44 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+hilt-android-core = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines"}
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+media3-exoplayer = { group = "androidx.media3",name = "media3-exoplayer", version.ref = "exoplayer"}
+media3-exoplyer-dash = {group = "androidx.media3",name = "media3-exoplayer-dash", version.ref = "exoplayer"}
+media3-ui = {group = "androidx.media3",name = "media3-ui",version.ref = "exoplayer"}
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-lifecycleService = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "androidxLifecycle" }
+androidx-lifecycle-lifecycleCompiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "androidxLifecycle" }
+
+#// ViewModel
+#implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+#// ViewModel utilities for Compose
+#implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+#// Lifecycle utilities for Compose
+#implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
+#// Saved state module for ViewModel
+#implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
+#
+#// Annotation processor
+#kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
+#// optional - helpers for implementing LifecycleOwner in a Service
+#implementation("androidx.lifecycle:lifecycle-service:$lifecycle_version")
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+
+
+
 

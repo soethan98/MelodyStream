@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -67,4 +69,40 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+
+    // Hilt
+    implementation(libs.hilt.android.core)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+
+    /// Navigation
+    implementation(libs.navigation.compose)
+
+    /// Coil
+    implementation(libs.coil.kt.compose)
+
+    /// Exoplayer
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplyer.dash)
+    implementation(libs.media3.ui)
+
+    // Lifecycle
+    /// ViewModel utilities for Compose
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.viewModelktx)
+    /// Lifecycle utilities for Compose
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    /// helpers for implementing LifecycleOwner in a Service
+    implementation(libs.androidx.lifecycle.lifecycleService)
+    /// Saved state module for ViewModel
+    implementation(libs.androidx.lifecycle.viewModelSavedState)
+    kapt(libs.androidx.lifecycle.lifecycleCompiler)
+
+
 }
+
