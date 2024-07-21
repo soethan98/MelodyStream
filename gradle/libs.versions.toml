@@ -54,19 +54,6 @@ androidx-lifecycle-lifecycleService = { group = "androidx.lifecycle", name = "li
 androidx-lifecycle-viewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "androidxLifecycle" }
 androidx-lifecycle-lifecycleCompiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "androidxLifecycle" }
 
-#// ViewModel
-#implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-#// ViewModel utilities for Compose
-#implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
-#// Lifecycle utilities for Compose
-#implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
-#// Saved state module for ViewModel
-#implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
-#
-#// Annotation processor
-#kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
-#// optional - helpers for implementing LifecycleOwner in a Service
-#implementation("androidx.lifecycle:lifecycle-service:$lifecycle_version")
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

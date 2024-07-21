@@ -1,4 +1,4 @@
-package com.soethan.melodystream.ui.theme
+package com.soethan.melodystream.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
