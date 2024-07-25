@@ -29,15 +29,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.soethan.melodystream.components.SongListTitle
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+
+@AndroidEntryPoint
+    class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
             MelodyStreamTheme {
 
-                val mainViewModel = viewModel<MainViewModel>()
+                val mainViewModel = hiltViewModel<MainViewModel>()
                 val context = LocalContext.current
                 var permissionDenied by remember { mutableStateOf(false) }
                 var permissionPermanentlyDenied by remember { mutableStateOf(false) }
@@ -67,6 +72,8 @@ class MainActivity : ComponentActivity() {
                     })
 
                 LaunchedEffect(key1 = true) {
+
+                    mainViewModel.getAudioFiles()
                     when (ContextCompat.checkSelfPermission(
                         context,
                         Manifest.permission.READ_MEDIA_AUDIO
@@ -147,7 +154,7 @@ class MainActivity : ComponentActivity() {
                                 onGoToAppSettingsClick = { openAppSettings() })
                         }
                     } else {
-                        Greeting("Android")
+                        SongListTitle(song = generateSampleSongs()[1])
                     }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
 //

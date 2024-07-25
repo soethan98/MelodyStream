@@ -1,17 +1,32 @@
 package com.soethan.melodystream
 
+import android.util.Log
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel:ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val contentResolverHelper: ContentResolverHelper
+):ViewModel() {
 private val _isPermissionAllowed = mutableStateOf<Boolean?>(null)
     val isPermissionAllowed : State<Boolean?> get() = _isPermissionAllowed
 
 
     fun onPermissionChanged(value:Boolean){
         _isPermissionAllowed.value = value
+    }
+
+    fun getAudioFiles(){
+        viewModelScope.launch {
+           val results =  contentResolverHelper.getAudioData()
+            Log.i("MainViewModel", "getAudioFiles: ${results.size}")
+        }
     }
 }
