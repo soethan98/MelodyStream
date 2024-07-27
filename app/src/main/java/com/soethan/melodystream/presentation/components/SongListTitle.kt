@@ -1,4 +1,4 @@
-package com.soethan.melodystream.components
+package com.soethan.melodystream.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

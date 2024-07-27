@@ -7,6 +7,8 @@ data class SongMediaItem(
     val artist:String,
 )
 
+
+
 fun generateSampleSongs(): List<SongMediaItem> {
     return listOf(
         SongMediaItem(id = "1", title = "Song One", album = "Album A", artist = "Artist X"),
