@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.soethan.melodystream.presentation.components.AlbumTile
+import com.soethan.melodystream.presentation.components.ArtistTile
 import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -147,7 +148,7 @@ import dagger.hilt.android.AndroidEntryPoint
                                 onGoToAppSettingsClick = { openAppSettings() })
                         }
                     } else {
-                        AlbumTile(data = generateSampleSongs()[1])
+                        ArtistTile(data = generateSampleSongs()[1])
                     }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
 //
