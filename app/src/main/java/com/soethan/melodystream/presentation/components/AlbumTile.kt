@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.soethan.melodystream.SongMediaItem
@@ -35,9 +36,9 @@ fun AlbumTile(
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = data.album, style = TextStyle(
-            fontWeight = FontWeight.Bold
+        Text(text = data.album, overflow = TextOverflow.Ellipsis,style = TextStyle(
+            fontWeight = FontWeight.Bold,
         ))
-        Text(text = data.artist)
+        Text(text = data.artist, overflow = TextOverflow.Ellipsis)
     }
 }
