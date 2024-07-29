@@ -75,6 +75,6 @@ fun SongListTitle(song: SongMediaItem, modifier: Modifier = Modifier) {
     }
 
     if (showBottomSheet){
-        MenuBottomSheet()
+        SortMenu()
     }
 }
