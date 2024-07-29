@@ -148,7 +148,7 @@ import dagger.hilt.android.AndroidEntryPoint
                                 onGoToAppSettingsClick = { openAppSettings() })
                         }
                     } else {
-                        ArtistTile(data = generateSampleSongs()[1])
+                        SongListTitle(song = generateSampleSongs()[1])
                     }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
 //
