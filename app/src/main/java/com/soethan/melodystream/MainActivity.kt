@@ -13,6 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.soethan.melodystream.presentation.components.AlbumTile
 import com.soethan.melodystream.presentation.components.ArtistTile
+import com.soethan.melodystream.presentation.components.FavoritePlayListTile
 import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,7 +150,10 @@ import dagger.hilt.android.AndroidEntryPoint
                                 onGoToAppSettingsClick = { openAppSettings() })
                         }
                     } else {
-                        SongListTitle(song = generateSampleSongs()[1])
+                        Scaffold {
+                            FavoritePlayListTile()
+
+                        }
                     }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
 //
