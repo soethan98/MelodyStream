@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelSavedState)
     kapt(libs.androidx.lifecycle.lifecycleCompiler)
 
-
+    /// Image Blur
+    implementation(libs.compose.cloudy)
 }
 

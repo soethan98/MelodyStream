@@ -43,6 +43,7 @@ import com.soethan.melodystream.presentation.components.AlbumTile
 import com.soethan.melodystream.presentation.components.ArtistTile
 import com.soethan.melodystream.presentation.components.FavoritePlayListTile
 import com.soethan.melodystream.presentation.components.MelodyNavDrawer
+import com.soethan.melodystream.presentation.components.MusicPlayerScreen
 import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -165,34 +166,35 @@ class MainActivity : ComponentActivity() {
                                 onGoToAppSettingsClick = { openAppSettings() })
                         }
                     } else {
-                        ModalNavigationDrawer(
-                            drawerState = drawerState,
-                            drawerContent = {
-                            MelodyNavDrawer()
-
-                        }) {
-                            Scaffold(
-                                topBar = {
-                                    TopAppBar(title = {
-                                        Text(text = "Melody Stream")
-                                    }, navigationIcon = {
-                                        IconButton(onClick = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }) {
-                                            Icon(
-                                                imageVector = Icons.Default.Menu,
-                                                contentDescription = "Menu"
-                                            )
-                                        }
-                                    })
-                                }
-                            ) {
-                                FavoritePlayListTile()
-
-                            }
-                        }
+                        MusicPlayerScreen( )
+//                        ModalNavigationDrawer(
+//                            drawerState = drawerState,
+//                            drawerContent = {
+//                            MelodyNavDrawer()
+//
+//                        }) {
+//                            Scaffold(
+//                                topBar = {
+//                                    TopAppBar(title = {
+//                                        Text(text = "Melody Stream")
+//                                    }, navigationIcon = {
+//                                        IconButton(onClick = {
+//                                            scope.launch {
+//                                                drawerState.open()
+//                                            }
+//                                        }) {
+//                                            Icon(
+//                                                imageVector = Icons.Default.Menu,
+//                                                contentDescription = "Menu"
+//                                            )
+//                                        }
+//                                    })
+//                                }
+//                            ) {
+//                                FavoritePlayListTile()
+//
+//                            }
+//                        }
 
                     }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
