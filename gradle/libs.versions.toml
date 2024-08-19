@@ -21,7 +21,7 @@ cloudy = "0.2.0"
 
 
 # @keep
-hilt = "2.44.2"
+hilt = "2.50"
 hiltExt = "1.0.0"
 appcompat = "1.7.0"
 material = "1.12.0"

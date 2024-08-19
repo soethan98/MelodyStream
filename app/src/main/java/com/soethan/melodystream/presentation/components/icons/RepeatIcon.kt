@@ -14,6 +14,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 
+/**
+ * Repeat icon vector graphic created by the original author.
+ *
+ * Original source: [https://www.composables.com/icons]
+ */
+
 @Composable
 fun RepeatIcon(): ImageVector {
     return remember {

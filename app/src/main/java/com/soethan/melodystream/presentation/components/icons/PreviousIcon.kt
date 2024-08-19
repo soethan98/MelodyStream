@@ -14,6 +14,12 @@ import androidx.compose.ui.unit.dp
 
 
 
+
+/**
+ * Previous icon vector graphic created by the original author.
+ *
+ * Original source: [https://www.composables.com/icons]
+ */
 @Composable
 fun PreviousIcon(): ImageVector {
     return remember {

@@ -12,6 +12,12 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 
+/**
+ * Pause icon vector graphic created by the original author.
+ *
+ * Original source: [https://www.composables.com/icons]
+ */
+
 @Composable
 fun PauseIcon(): ImageVector {
     return remember {

@@ -3,6 +3,10 @@ package com.soethan.melodystream
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.WorkerThread
@@ -20,9 +24,10 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
         MediaStore.Audio.AudioColumns.DATA,
         MediaStore.Audio.AudioColumns.DURATION,
         MediaStore.Audio.AudioColumns.TITLE,
+        MediaStore.Audio.AudioColumns.ALBUM
     )
 
-    private var selectionClause:String? = "${MediaStore.Audio.AudioColumns.IS_MUSIC} = ?"
+    private var selectionClause: String? = "${MediaStore.Audio.AudioColumns.IS_MUSIC} = ?"
     private var selectionArg = arrayOf("1")
 
     private val sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC"
@@ -31,7 +36,8 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
     fun getAudioData(): List<Audio> {
         return getCursorData()
     }
-    private fun getCursorData(): MutableList<Audio>{
+
+    private fun getCursorData(): MutableList<Audio> {
         val audioList = mutableListOf<Audio>()
 
         mCursor = context.contentResolver.query(
@@ -54,29 +60,53 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION)
             val titleColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE)
+            val albumNameColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM)
 
             cursor.apply {
-                if (count == 0){
+                if (count == 0) {
                     Log.e("Cursor", "getCursorData: Cursor is Empty")
-                }else{
-                    while (cursor.moveToNext()){
+                } else {
+                    while (cursor.moveToNext()) {
+
                         val displayName = getString(displayNameColumn)
                         val id = getLong(idColumn)
                         val artist = getString(artistColumn)
                         val data = getString(dataColumn)
                         val duration = getInt(durationColumn)
                         val title = getString(titleColumn)
+                        val albumName = getString(albumNameColumn)
                         val uri = ContentUris.withAppendedId(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id
                         )
+                        val albumArtCover = getAlbumArt(uri, context = context)
                         audioList += Audio(
-                            uri, displayName, id, artist, data, duration, title
+                            uri, displayName, id, artist, data, duration, title,
+                            albumArtCover = albumArtCover,
+                            albumName = albumName
                         )
+
                     }
                 }
             }
         }
         return audioList
     }
+
+    @WorkerThread
+    fun getAlbumArt(uri: Uri, context: Context): Bitmap? {
+        return try {
+            MediaMetadataRetriever().use { mmr ->
+                mmr.setDataSource(context, uri)
+                val data = mmr.embeddedPicture
+                data?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
+            }
+        } catch (e: Exception) {
+            // Consider returning a default bitmap or throwing a custom exception
+            null
+        }
+
+    }
+
 }

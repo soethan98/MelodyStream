@@ -45,6 +45,7 @@ import com.soethan.melodystream.presentation.components.FavoritePlayListTile
 import com.soethan.melodystream.presentation.components.MelodyNavDrawer
 import com.soethan.melodystream.presentation.components.MusicPlayerScreen
 import com.soethan.melodystream.presentation.components.SongListTitle
+import com.soethan.melodystream.presentation.screens.HomeScreen
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -139,34 +140,36 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    if (permissionDenied) {
-                        if (permissionPermanentlyDenied) {
-                            PermissionDialog(
-                                permissionTextProvider = AudioPermissionTextProvider(),
-                                isPermanentlyDeclined =
-                                true,
-                                onDismiss = { /*TODO*/ },
-                                onOkClick = {
-                                    permissionLauncher.launch(
-                                        Manifest.permission.READ_MEDIA_AUDIO
-                                    )
-                                },
-                                onGoToAppSettingsClick = { openAppSettings() })
-                        } else {
-                            PermissionDialog(
-                                permissionTextProvider = AudioPermissionTextProvider(),
-                                isPermanentlyDeclined =
-                                false,
-                                onDismiss = { /*TODO*/ },
-                                onOkClick = {
-                                    permissionLauncher.launch(
-                                        Manifest.permission.READ_MEDIA_AUDIO
-                                    )
-                                },
-                                onGoToAppSettingsClick = { openAppSettings() })
-                        }
-                    } else {
-                        MusicPlayerScreen( )
+                    HomeScreen( )
+
+//                    if (permissionDenied) {
+//                        if (permissionPermanentlyDenied) {
+//                            PermissionDialog(
+//                                permissionTextProvider = AudioPermissionTextProvider(),
+//                                isPermanentlyDeclined =
+//                                true,
+//                                onDismiss = { /*TODO*/ },
+//                                onOkClick = {
+//                                    permissionLauncher.launch(
+//                                        Manifest.permission.READ_MEDIA_AUDIO
+//                                    )
+//                                },
+//                                onGoToAppSettingsClick = { openAppSettings() })
+//                        } else {
+//                            PermissionDialog(
+//                                permissionTextProvider = AudioPermissionTextProvider(),
+//                                isPermanentlyDeclined =
+//                                false,
+//                                onDismiss = { /*TODO*/ },
+//                                onOkClick = {
+//                                    permissionLauncher.launch(
+//                                        Manifest.permission.READ_MEDIA_AUDIO
+//                                    )
+//                                },
+//                                onGoToAppSettingsClick = { openAppSettings() })
+//                        }
+//                    } else {
+
 //                        ModalNavigationDrawer(
 //                            drawerState = drawerState,
 //                            drawerContent = {
@@ -217,7 +220,7 @@ class MainActivity : ComponentActivity() {
 //                    }
 
 
-                }
+                //}
 
 
             }

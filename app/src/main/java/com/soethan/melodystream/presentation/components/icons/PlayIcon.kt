@@ -13,6 +13,12 @@ import androidx.compose.ui.unit.dp
 
 
 
+
+/**
+ * Play icon vector graphic created by the original author.
+ *
+ * Original source: [https://www.composables.com/icons]
+ */
 @Composable
 fun PlayIcon(): ImageVector {
     return remember {
