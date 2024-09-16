@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -105,5 +107,8 @@ dependencies {
 
     /// Image Blur
     implementation(libs.compose.cloudy)
+
+    // Kotlinx-serialization
+    implementation(libs.kotlinx.serialization.json)
 }
 

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MelodyStream</string>
+    <string name="songs">Songs</string>
+    <string name="playlist">Playlists</string>
+    <string name="artists">Artists</string>
+    <string name="albums">Albums</string>
+    <string name="genres">Genres</string>
 </resources>

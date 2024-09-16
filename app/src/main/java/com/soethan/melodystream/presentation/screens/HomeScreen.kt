@@ -16,28 +16,28 @@ import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.data
 import com.soethan.melodystream.presentation.viewmodel.AudioViewModel
 
-@Composable
-fun HomeScreen(
-    audioViewModel: AudioViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
-) {
-
-    val audioList by audioViewModel.audioList.collectAsState()
-
-
-    when(audioList){
-        is UIState.Content -> {
-            LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(
-                horizontal = 16.dp, vertical = 16.dp,
-            ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)){
-                items(audioList.data()!!.size){
-                    SongListTitle(song = audioList.data()!![it])
-                }
-            }
-        } 
-        else -> {
-            
-        }
-    }
-}
+//@Composable
+//fun HomeScreen(
+//    audioViewModel: AudioViewModel = hiltViewModel(),
+//    modifier: Modifier = Modifier
+//) {
+//
+//    val audioList by audioViewModel.audioList.collectAsState()
+//
+//
+//    when(audioList){
+//        is UIState.Content -> {
+//            LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(
+//                horizontal = 16.dp, vertical = 16.dp,
+//            ),
+//                verticalArrangement = Arrangement.spacedBy(12.dp)){
+//                items(audioList.data()!!.size){
+//                    SongListTitle(song = audioList.data()!![it])
+//                }
+//            }
+//        }
+//        else -> {
+//
+//        }
+//    }
+//}

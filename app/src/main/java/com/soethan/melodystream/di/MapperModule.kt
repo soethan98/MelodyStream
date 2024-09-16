@@ -1,0 +1,15 @@
+package com.soethan.melodystream.di
+
+import com.soethan.melodystream.data.mapper.AudioMapper
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Module
+@InstallIn(SingletonComponent::class)
+object MapperModule {
+
+    fun provideAudioMapper() :AudioMapper{
+        return AudioMapper()
+    }
+}

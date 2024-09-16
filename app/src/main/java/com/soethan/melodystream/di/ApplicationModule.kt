@@ -2,6 +2,7 @@ package com.soethan.melodystream.di
 
 import android.content.Context
 import com.soethan.melodystream.ContentResolverHelper
+import com.soethan.melodystream.data.mapper.AudioMapper
 import com.soethan.melodystream.data.repository.AudioRepository
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,7 +19,10 @@ object ApplicationModule {
     }
 
 
-    fun provideAudioRepository(contentResolverHelper: ContentResolverHelper): AudioRepository {
-        return AudioRepository(contentResolverHelper = contentResolverHelper)
+    fun provideAudioRepository(
+        contentResolverHelper: ContentResolverHelper,
+        audioMapper: AudioMapper
+    ): AudioRepository {
+        return AudioRepository(contentResolverHelper = contentResolverHelper, audioMapper)
     }
 }

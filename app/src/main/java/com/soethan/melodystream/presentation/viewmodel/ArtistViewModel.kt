@@ -1,9 +1,8 @@
 package com.soethan.melodystream.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.soethan.melodystream.AudioInfo
-import com.soethan.melodystream.data.model.SongInfo
 import com.soethan.melodystream.data.repository.AudioRepository
 import com.soethan.melodystream.presentation.UIState
 import com.soethan.melodystream.presentation.model.UiSongInfo
@@ -13,9 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
-class AudioViewModel @Inject constructor(
+class ArtistViewModel @Inject constructor(
     private val audioRepository: AudioRepository
 ) : ViewModel() {
 
@@ -28,11 +26,11 @@ class AudioViewModel @Inject constructor(
     }
 
     fun loadMusicFiles() {
+        Log.i("ArtistViewModel", "loadMusicFiles: ")
+
         viewModelScope.launch {
             val musicList = audioRepository.getAudioData()
             _audioList.value = UIState.Content(data = musicList.map { UiSongInfo(songInfo = it) })
         }
     }
 }
-
-

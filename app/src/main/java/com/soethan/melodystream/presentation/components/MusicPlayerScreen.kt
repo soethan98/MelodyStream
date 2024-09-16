@@ -34,7 +34,7 @@ import com.soethan.melodystream.R
 
 
 @Composable
-fun MusicPlayerScreen(modifier: Modifier = Modifier) {
+fun PlayerScreen(uri:String,modifier: Modifier = Modifier) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.vjs),

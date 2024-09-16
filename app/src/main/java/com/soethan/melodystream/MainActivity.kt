@@ -39,13 +39,14 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.navigation.compose.rememberNavController
 import com.soethan.melodystream.presentation.components.AlbumTile
 import com.soethan.melodystream.presentation.components.ArtistTile
 import com.soethan.melodystream.presentation.components.FavoritePlayListTile
 import com.soethan.melodystream.presentation.components.MelodyNavDrawer
-import com.soethan.melodystream.presentation.components.MusicPlayerScreen
 import com.soethan.melodystream.presentation.components.SongListTitle
-import com.soethan.melodystream.presentation.screens.HomeScreen
+import com.soethan.melodystream.presentation.navigation.AppMainNavigation
+import com.soethan.melodystream.presentation.screens.MainScreen
 import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -140,7 +141,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen( )
+                    val navController = rememberNavController()
+                    AppMainNavigation(navController = navController)
 
 //                    if (permissionDenied) {
 //                        if (permissionPermanentlyDenied) {

@@ -33,12 +33,12 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
     private val sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC"
 
     @WorkerThread
-    fun getAudioData(): List<Audio> {
+    fun getAudioData(): List<AudioInfo> {
         return getCursorData()
     }
 
-    private fun getCursorData(): MutableList<Audio> {
-        val audioList = mutableListOf<Audio>()
+    private fun getCursorData(): MutableList<AudioInfo> {
+        val audioList = mutableListOf<AudioInfo>()
 
         mCursor = context.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -81,7 +81,7 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
                             id
                         )
                         val albumArtCover = getAlbumArt(uri, context = context)
-                        audioList += Audio(
+                        audioList += AudioInfo(
                             uri, displayName, id, artist, data, duration, title,
                             albumArtCover = albumArtCover,
                             albumName = albumName
