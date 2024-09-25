@@ -12,13 +12,13 @@ import javax.inject.Inject
 
 class AudioRepository @Inject constructor(
     private val contentResolverHelper: ContentResolverHelper,
-    private val albumRepository: IAlbum,
+    private val genreRepository: IGenreRepository,
     private val audioMapper: AudioMapper,
     private val artistRepository: IArtistRepository
 ) {
     suspend fun getAudioData(): List<SongInfo> = withContext(Dispatchers.IO) {
         val audioList = contentResolverHelper.getAudioData()
-        val albumList = artistRepository.getAllArtists()
+        val albumList = genreRepository.getAllGenres()
 
          audioList.map { audioMapper.toSong(it) }
     }

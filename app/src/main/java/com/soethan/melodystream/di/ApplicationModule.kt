@@ -6,7 +6,9 @@ import com.soethan.melodystream.data.mapper.AudioMapper
 import com.soethan.melodystream.data.repository.AudioRepository
 import com.soethan.melodystream.data.repository.AlbumRepository
 import com.soethan.melodystream.data.repository.ArtistRepository
+import com.soethan.melodystream.data.repository.GenreRepository
 import com.soethan.melodystream.data.repository.IArtistRepository
+import com.soethan.melodystream.data.repository.IGenreRepository
 import com.soethan.melodystream.media.IAlbum
 import dagger.Module
 import dagger.Provides
@@ -38,16 +40,24 @@ object ApplicationModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun provideGenreRepository(@ApplicationContext context: Context): IGenreRepository {
+        return GenreRepository(context = context)
+    }
+
+
     fun provideAudioRepository(
         contentResolverHelper: ContentResolverHelper,
         audioMapper: AudioMapper,
-        albumRepository: IAlbum,
-        artistRepository: IArtistRepository
+        artistRepository: IArtistRepository,
+        genreRepository: IGenreRepository
     ): AudioRepository {
         return AudioRepository(
             contentResolverHelper = contentResolverHelper,
-            albumRepository,
+            genreRepository,
             audioMapper,
+
             artistRepository = artistRepository
         )
     }
