@@ -1,5 +1,8 @@
 package com.soethan.melodystream.presentation.components
 
+import android.content.ContentUris
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,26 +34,55 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.soethan.melodystream.AudioInfo
 import com.soethan.melodystream.R
+import com.soethan.melodystream.presentation.model.UiSongInfo
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
-fun SongListTitle(song: AudioInfo, modifier: Modifier = Modifier) {
+fun SongListTitle(song: UiSongInfo, modifier: Modifier = Modifier) {
     var showBottomSheet by remember {
         mutableStateOf(false)
     }
 
 
-    Row(modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+//        GlideImage(
+//            model = Uri.parse("content://media/external/audio/albumart/15"),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .width(50.dp)
+//                .height(50.dp)
+//                .clip(RoundedCornerShape(10.dp))
+//        )
+//        Image(
+//            painter = rememberImagePainter(Uri.parse("content://media/external/audio/albumart/3"), builder = {
+//                // Optional: Set Coil options as needed
+//                placeholder(R.drawable.heart) // Set a placeholder image
+//                error(R.drawable.earphones) // Set an error image
+//                crossfade(true) // Enable crossfading for smoother transitions
+//            }),
+//            contentDescription = "Album cover art",
+//            contentScale = ContentScale.Crop, // Adjust the content scale as needed
+//        )
+//
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(song.albumArtCover)
+
+            model =
+            ImageRequest.Builder(LocalContext.current)
+                .data(song.songInfo.albumArtCover)
                 .error(R.drawable.heart)
                 .placeholder(R.drawable.heart)
+
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -69,7 +101,7 @@ fun SongListTitle(song: AudioInfo, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = song.title, overflow = TextOverflow.Ellipsis,
+                text = song.songInfo.title, overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
@@ -79,7 +111,7 @@ fun SongListTitle(song: AudioInfo, modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = "${song.artist} | ${song.albumName}",
+                text = "${song.songInfo.artist} | ${song.songInfo.albumName}",
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
                 maxLines = 1,

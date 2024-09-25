@@ -1,4 +1,4 @@
-package com.soethan.melodystream.presentation.ui.theme
+package com.soethan.melodystream.theme
 
 import android.app.Activity
 import android.os.Build

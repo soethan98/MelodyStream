@@ -1,4 +1,4 @@
-package com.soethan.melodystream
+package com.soethan.melodystream.media
 
 import android.content.ContentUris
 import android.content.Context
@@ -10,10 +10,12 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.WorkerThread
+import com.soethan.melodystream.AudioInfo
+import com.soethan.melodystream.media.model.Track
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class ContentResolverHelper @Inject constructor(@ApplicationContext val context: Context) {
+class TrackRepository @Inject constructor(@ApplicationContext val context: Context) : ITrack {
     private var mCursor: Cursor? = null
 
 
@@ -32,13 +34,25 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
 
     private val sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC"
 
+
     @WorkerThread
-    fun getAudioData(): List<AudioInfo> {
-        return getCursorData()
+    fun getAlbumArt(uri: Uri, context: Context): Bitmap? {
+        return try {
+            MediaMetadataRetriever().use { mmr ->
+                mmr.setDataSource(context, Uri.parse("content://media/external/audio/albumart/3"))
+                val data = mmr.embeddedPicture
+                data?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
+            }
+        } catch (e: Exception) {
+            // Consider returning a default bitmap or throwing a custom exception
+            null
+        }
+
     }
 
-    private fun getCursorData(): MutableList<AudioInfo> {
-        val audioList = mutableListOf<AudioInfo>()
+    @WorkerThread
+    override fun getAllTracks(): List<Track> {
+        val trackList = mutableListOf<Track>()
 
         mCursor = context.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -52,16 +66,20 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns._ID)
             val displayNameColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DISPLAY_NAME)
-            val artistColumn =
+            val artistIDColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ARTIST_ID)
+            val artistNameColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ARTIST)
+            val albumIDColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM_ID)
+            val albumNameColumn =
+                cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM)
             val dataColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA)
             val durationColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION)
             val titleColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE)
-            val albumNameColumn =
-                cursor.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM)
 
             cursor.apply {
                 if (count == 0) {
@@ -71,42 +89,30 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
 
                         val displayName = getString(displayNameColumn)
                         val id = getLong(idColumn)
-                        val artist = getString(artistColumn)
+                        val artistID = getLong(artistIDColumn)
+                        val artistName = getString(artistNameColumn)
                         val data = getString(dataColumn)
                         val duration = getInt(durationColumn)
                         val title = getString(titleColumn)
+                        val albumID = getLong(albumIDColumn)
                         val albumName = getString(albumNameColumn)
                         val uri = ContentUris.withAppendedId(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id
                         )
                         val albumArtCover = getAlbumArt(uri, context = context)
-                        audioList += AudioInfo(
-                            uri, displayName, id, artist, data, duration, title,
+                        trackList += Track(
+                            uri, displayName, id, artistID, artistName, data, duration, title,
                             albumArtCover = albumArtCover,
-                            albumName = albumName
+                            albumName = albumName,
+                            albumId = albumID
                         )
 
                     }
                 }
             }
         }
-        return audioList
-    }
-
-    @WorkerThread
-    fun getAlbumArt(uri: Uri, context: Context): Bitmap? {
-        return try {
-            MediaMetadataRetriever().use { mmr ->
-                mmr.setDataSource(context, uri)
-                val data = mmr.embeddedPicture
-                data?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
-            }
-        } catch (e: Exception) {
-            // Consider returning a default bitmap or throwing a custom exception
-            null
-        }
-
+        return trackList
     }
 
 }

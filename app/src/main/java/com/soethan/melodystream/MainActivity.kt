@@ -47,7 +47,7 @@ import com.soethan.melodystream.presentation.components.MelodyNavDrawer
 import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.navigation.AppMainNavigation
 import com.soethan.melodystream.presentation.screens.MainScreen
-import com.soethan.melodystream.presentation.ui.theme.MelodyStreamTheme
+import com.soethan.melodystream.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

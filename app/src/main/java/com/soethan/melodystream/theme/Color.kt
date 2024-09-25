@@ -1,4 +1,4 @@
-package com.soethan.melodystream.presentation.ui.theme
+package com.soethan.melodystream.theme
 
 import androidx.compose.ui.graphics.Color
 
