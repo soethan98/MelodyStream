@@ -25,8 +25,11 @@ class PermissionViewModel(private val permissions:List<PermissionModel>,askPermi
         val notGrantedPermissions = permissions.filter { it.permission in result.filter { permission -> permission.value.not() } }
         if (notGrantedPermissions.isEmpty()){
             onConsumeRational()
+            _state.update {
+                it.copy(allPermissionsGranted = true)
+            }
         }else {
-            _state.update {state-> state.copy(permissions = notGrantedPermissions.map { it.permission }) }
+            _state.update {state-> state.copy(permissions = notGrantedPermissions.map { it.permission }, allPermissionsGranted = false) }
 
             if (endPermissionRequest - startPermissionRequest < 200) {
                 _state.update {

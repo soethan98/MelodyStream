@@ -15,9 +15,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -26,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.soethan.melodystream.openAppSettings
 
@@ -34,7 +37,8 @@ import com.soethan.melodystream.openAppSettings
 fun PermissionHandler(
     permissions: List<PermissionModel>,
     askPermission: Boolean,
-    result: (Map<String, Boolean>) -> Unit = {}
+    result: (Map<String, Boolean>) -> Unit = {},
+    allPermissionGranted: () -> Unit
 ) {
     val activity = LocalContext.current as Activity
     val viewModel: PermissionViewModel = viewModel(
@@ -45,6 +49,7 @@ fun PermissionHandler(
     )
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -61,6 +66,7 @@ fun PermissionHandler(
         }
     })
 
+
     LaunchedEffect(key1 = state.navigateToSetting, block = {
         if (state.navigateToSetting) {
             activity.openAppSettings()
@@ -68,46 +74,56 @@ fun PermissionHandler(
         }
     })
 
+    LaunchedEffect(key1 = state.allPermissionsGranted, block = {
+        if (state.allPermissionsGranted) {
+            allPermissionGranted() // Notify MainActivity
+        }
+    })
+
     AnimatedVisibility(
         visible = state.showRational,
-
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()  // Fill the whole screen
+                .background(MaterialTheme.colorScheme.background), // Optional: Background color
+            contentAlignment = Alignment.Center // Center the content
         ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()  // Fill the screen inside the Box
+                    .padding(16.dp), // Optional: Padding
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center // Vertically center the content
             ) {
+
                 Text(
                     text = "Access denied",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(vertical = 8.dp),
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
-            }
 
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            state.rationals.forEachIndexed { index, item ->
-                Text(
-                    text = "${index + 1}) $item",
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            Button(
-                onClick = viewModel::onGrantPermissionClicked,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp)
-            ) {
-                Text(text = "Grant Permission", modifier = Modifier.padding(vertical = 4.dp))
-            }
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                state.rationals.forEachIndexed { index, item ->
+                    Text(
+                        text = "${index + 1}) $item",
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                Button(
+                    onClick = viewModel::onGrantPermissionClicked,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Text(text = "Grant Permission", modifier = Modifier.padding(vertical = 4.dp))
+                }
 
+            }
         }
+
     }
 }

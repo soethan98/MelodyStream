@@ -63,17 +63,15 @@ class MainActivity : ComponentActivity() {
 
 
             MelodyStreamTheme {
-
-                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                val scope = rememberCoroutineScope()
-
-
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+                    var permissionsGranted by remember { mutableStateOf(false) }
+
+                    AppMainNavigation(navController = navController)
 
                     PermissionHandler(
                         permissions = listOf(
@@ -83,89 +81,18 @@ class MainActivity : ComponentActivity() {
                                 minSDKVersion = 33,
                                 rational = "Access to audios is required"
                             )
-                        ), askPermission = true
+                        ), askPermission = true,
+                        allPermissionGranted = {
+                            permissionsGranted = true
+                        }
+
                     )
-                    AppMainNavigation(navController = navController)
 
-//                    if (permissionDenied) {
-//                        if (permissionPermanentlyDenied) {
-//                            PermissionDialog(
-//                                permissionTextProvider = AudioPermissionTextProvider(),
-//                                isPermanentlyDeclined =
-//                                true,
-//                                onDismiss = { /*TODO*/ },
-//                                onOkClick = {
-//                                    permissionLauncher.launch(
-//                                        Manifest.permission.READ_MEDIA_AUDIO
-//                                    )
-//                                },
-//                                onGoToAppSettingsClick = { openAppSettings() })
-//                        } else {
-//                            PermissionDialog(
-//                                permissionTextProvider = AudioPermissionTextProvider(),
-//                                isPermanentlyDeclined =
-//                                false,
-//                                onDismiss = { /*TODO*/ },
-//                                onOkClick = {
-//                                    permissionLauncher.launch(
-//                                        Manifest.permission.READ_MEDIA_AUDIO
-//                                    )
-//                                },
-//                                onGoToAppSettingsClick = { openAppSettings() })
-//                        }
-//                    } else {
+                    if (permissionsGranted)
+                        AppMainNavigation(navController = navController)
 
-//                        ModalNavigationDrawer(
-//                            drawerState = drawerState,
-//                            drawerContent = {
-//                            MelodyNavDrawer()
-//
-//                        }) {
-//                            Scaffold(
-//                                topBar = {
-//                                    TopAppBar(title = {
-//                                        Text(text = "Melody Stream")
-//                                    }, navigationIcon = {
-//                                        IconButton(onClick = {
-//                                            scope.launch {
-//                                                drawerState.open()
-//                                            }
-//                                        }) {
-//                                            Icon(
-//                                                imageVector = Icons.Default.Menu,
-//                                                contentDescription = "Menu"
-//                                            )
-//                                        }
-//                                    })
-//                                }
-//                            ) {
-//                                FavoritePlayListTile()
-//
-//                            }
-//                        }
 
                 }
-//                    if ( mainViewModel.isPermissionAllowed.value == true) {
-//
-//
-//                    } else {
-//                        PermissionDialog(
-//                            permissionTextProvider = AudioPermissionTextProvider(),
-//                            isPermanentlyDeclined =
-//                            !shouldShowRequestPermissionRationale(
-//                                Manifest.permission.READ_MEDIA_AUDIO
-//                            ),
-//                            onDismiss = { /*TODO*/ },
-//                            onOkClick = {
-//                                permissionLauncher.launch(
-//                                    Manifest.permission.READ_MEDIA_AUDIO
-//                                )
-//                            },
-//                            onGoToAppSettingsClick = { openAppSettings() })
-//                    }
-
-
-                //}
 
 
             }
