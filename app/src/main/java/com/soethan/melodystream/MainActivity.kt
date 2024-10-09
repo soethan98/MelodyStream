@@ -45,8 +45,10 @@ import com.soethan.melodystream.presentation.components.ArtistTile
 import com.soethan.melodystream.presentation.components.FavoritePlayListTile
 import com.soethan.melodystream.presentation.components.MelodyNavDrawer
 import com.soethan.melodystream.presentation.components.SongListTitle
+import com.soethan.melodystream.presentation.model.permission.PermissionModel
 import com.soethan.melodystream.presentation.navigation.AppMainNavigation
 import com.soethan.melodystream.presentation.screens.MainScreen
+import com.soethan.melodystream.presentation.screens.PermissionHandler
 import com.soethan.melodystream.theme.MelodyStreamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -62,78 +64,8 @@ class MainActivity : ComponentActivity() {
 
             MelodyStreamTheme {
 
-                val mainViewModel = hiltViewModel<MainViewModel>()
-                val context = LocalContext.current
-                var permissionDenied by remember { mutableStateOf(false) }
-                var permissionPermanentlyDenied by remember { mutableStateOf(false) }
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
-
-
-                val permissionLauncher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-//                        mainViewModel.onPermissionChanged(isGranted);
-                        //mainViewModel.onPermissionChanged(isGranted)
-                        if (isGranted) {
-                            permissionDenied = false
-                        } else {
-                            // Check if permission was denied permanently
-                            permissionDenied = true
-                            permissionPermanentlyDenied =
-                                !shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)
-                        }
-                    })
-
-                LaunchedEffect(key1 = true) {
-
-                    mainViewModel.getAudioFiles()
-                    when (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.READ_MEDIA_AUDIO
-                    )) {
-                        PackageManager.PERMISSION_GRANTED -> {
-                            mainViewModel.onPermissionChanged(true);
-                            permissionDenied = false
-                        }
-
-                        PackageManager.PERMISSION_DENIED -> {
-                            permissionLauncher.launch(Manifest.permission.READ_MEDIA_AUDIO)
-
-
-                        }
-                    }
-                }
-
-                LifecycleEventEffect(event = Lifecycle.Event.ON_RESUME) {
-                    when (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.READ_MEDIA_AUDIO
-                    )) {
-                        PackageManager.PERMISSION_GRANTED -> {
-                            mainViewModel.onPermissionChanged(true);
-                            permissionDenied = false
-                        }
-
-
-                    }
-                }
-//
-//                DisposableEffect(key1 = lifecycleOwner){
-//                    val observer = LifecycleEventObserver { _, event ->
-//                        if (event == Lifecycle.Event.ON_RESUME) {
-//
-//                        }
-//
-//                    }
-//                    lifecycleOwner.lifecycle.addObserver(observer)
-//
-//
-//                    onDispose {
-//                        lifecycleOwner.lifecycle.removeObserver(observer)
-//                    }
-//
-//                }
 
 
                 // A surface container using the 'background' color from the theme
@@ -142,6 +74,17 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+
+                    PermissionHandler(
+                        permissions = listOf(
+                            PermissionModel(
+                                permission = "android.permission.READ_MEDIA_AUDIO",
+                                maxSDKVersion = Int.MAX_VALUE,
+                                minSDKVersion = 33,
+                                rational = "Access to audios is required"
+                            )
+                        ), askPermission = true
+                    )
                     AppMainNavigation(navController = navController)
 
 //                    if (permissionDenied) {
@@ -201,7 +144,7 @@ class MainActivity : ComponentActivity() {
 //                            }
 //                        }
 
-                    }
+                }
 //                    if ( mainViewModel.isPermissionAllowed.value == true) {
 //
 //
