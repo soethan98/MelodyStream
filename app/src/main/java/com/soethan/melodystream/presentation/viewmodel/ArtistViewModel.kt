@@ -3,6 +3,8 @@ package com.soethan.melodystream.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.soethan.melodystream.data.model.ArtistInfo
+import com.soethan.melodystream.data.repository.ArtistRepository
 import com.soethan.melodystream.data.repository.AudioRepository
 import com.soethan.melodystream.presentation.UIState
 import com.soethan.melodystream.presentation.model.UiSongInfo
@@ -14,11 +16,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArtistViewModel @Inject constructor(
-    private val audioRepository: AudioRepository
+    private val artistRepository: ArtistRepository
 ) : ViewModel() {
 
-    private val _audioList = MutableStateFlow<UIState<List<UiSongInfo>>>(UIState.Idle)
-    val audioList: StateFlow<UIState<List<UiSongInfo>>>
+    private val _audioList = MutableStateFlow<UIState<List<ArtistInfo>>>(UIState.Idle)
+    val audioList: StateFlow<UIState<List<ArtistInfo>>>
         get() = _audioList
 
     init {
@@ -29,8 +31,8 @@ class ArtistViewModel @Inject constructor(
         Log.i("ArtistViewModel", "loadMusicFiles: ")
 
         viewModelScope.launch {
-            val musicList = audioRepository.getAudioData()
-            _audioList.value = UIState.Content(data = musicList.map { UiSongInfo(songInfo = it) })
+            val musicList = artistRepository.getAllArtists()
+            _audioList.value = UIState.Content(data = musicList)
         }
     }
 }

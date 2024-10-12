@@ -71,7 +71,6 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     var permissionsGranted by remember { mutableStateOf(false) }
 
-                    AppMainNavigation(navController = navController)
 
                     PermissionHandler(
                         permissions = listOf(

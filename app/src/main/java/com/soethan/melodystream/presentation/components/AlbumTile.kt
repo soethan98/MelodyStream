@@ -18,16 +18,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.soethan.melodystream.SongMediaItem
+import com.soethan.melodystream.data.model.AlbumInfo
 
 @Composable
 fun AlbumTile(
     modifier: Modifier = Modifier,
-    data: SongMediaItem
+    data: AlbumInfo
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
         AsyncImage(
-            model = "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?q=80&w=2187&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            model = data.coverArt,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -36,9 +37,9 @@ fun AlbumTile(
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = data.album, overflow = TextOverflow.Ellipsis,style = TextStyle(
+        Text(text = data.albumName, overflow = TextOverflow.Ellipsis,style = TextStyle(
             fontWeight = FontWeight.Bold,
         ))
-        Text(text = data.artist, overflow = TextOverflow.Ellipsis)
+        Text(text = "${data.numberOfSongs} Tracks", overflow = TextOverflow.Ellipsis)
     }
 }

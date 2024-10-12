@@ -29,8 +29,8 @@ class PlaylistViewModel @Inject constructor(
         Log.i("PlaylistViewModel", "loadMusicFiles: ")
 
         viewModelScope.launch {
-            val musicList = audioRepository.getAudioData()
-            _audioList.value = UIState.Content(data = musicList.map { UiSongInfo(songInfo = it) })
+//            val musicList = audioRepository.getAudioData()
+//            _audioList.value = UIState.Content(data = musicList.map { UiSongInfo(songInfo = it) })
         }
     }
 }

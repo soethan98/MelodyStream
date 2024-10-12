@@ -34,7 +34,7 @@ fun SongsView(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(songs.data()!!.size) {
-                   // SongListTitle(song = songs!!.data()!![it])
+                    SongListTitle(song = songs!!.data()!![it])
                 }
             }
         }

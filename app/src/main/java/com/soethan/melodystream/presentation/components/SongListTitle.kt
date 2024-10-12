@@ -79,7 +79,7 @@ fun SongListTitle(song: UiSongInfo, modifier: Modifier = Modifier) {
 
             model =
             ImageRequest.Builder(LocalContext.current)
-                .data(song.songInfo.albumArtCover)
+                .data(song.songInfo.coverArt)
                 .error(R.drawable.heart)
                 .placeholder(R.drawable.heart)
 
@@ -111,7 +111,7 @@ fun SongListTitle(song: UiSongInfo, modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = "${song.songInfo.artist} | ${song.songInfo.albumName}",
+                text = "${song.songInfo.artist} | ${song.songInfo.album}",
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
                 maxLines = 1,
