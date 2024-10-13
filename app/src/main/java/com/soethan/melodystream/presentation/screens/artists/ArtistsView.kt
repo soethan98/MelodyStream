@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,19 +23,15 @@ import com.soethan.melodystream.presentation.viewmodel.ArtistViewModel
 import com.soethan.melodystream.presentation.viewmodel.SongsViewModel
 
 @Composable
-fun ArtistsView(modifier: Modifier = Modifier,
-                viewModel: ArtistViewModel = hiltViewModel()
+fun ArtistsView(
+    modifier: Modifier = Modifier,
+    viewModel: ArtistViewModel = hiltViewModel()
 ) {
     val artists by viewModel.audioList.collectAsState()
 
     when (artists) {
         is UIState.Content -> {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(
-                    horizontal = 16.dp, vertical = 16.dp,
-                ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
+            LazyVerticalGrid(columns = GridCells.Fixed(count = 2)) {
                 items(artists.data()!!.size) {
                     ArtistTile(data = artists!!.data()!![it])
 

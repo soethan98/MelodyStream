@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,43 +31,50 @@ import com.soethan.melodystream.data.model.ArtistInfo
 
 @Composable
 fun ArtistTile(data: ArtistInfo, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Box(modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        SubcomposeAsyncImage(
-            model = data.coverArt ?: data.defaultAlbumArtRes,
-            contentDescription = null,
-            contentScale = ContentScale.Crop, error = {
-                Box(
-                    modifier = Modifier
-                        .size(96.dp)
-                        .clip(
-                            RoundedCornerShape(22.dp)
-                        )
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Person,
-                        contentDescription = "wmkl",
+            SubcomposeAsyncImage(
+                model = data.coverArt,
+                contentDescription = null,
+                contentScale = ContentScale.Crop, error = {
+                    Box(
                         modifier = Modifier
-                            .size(50.dp)
-                            .align(Alignment.Center)
-                    )
+                            .size(96.dp)
+                            .background(Color.Black.copy(alpha = 0.3f))
+                            .clip(
+                                RoundedCornerShape(22.dp)
+                            )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = "artist",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .align(Alignment.Center)
+                        )
 
-                }
+                    }
 
-            },
-            modifier = Modifier
-                .width(96.dp)
-                .height(96.dp)
-                .clip(RoundedCornerShape(22.dp))
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = data.artistName,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = TextStyle(
-                fontWeight = FontWeight.Bold
+                },
+                modifier = Modifier
+                    .width(96.dp)
+                    .height(96.dp)
+                    .clip(RoundedCornerShape(22.dp))
             )
-        )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = data.artistName,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
     }
+
 }

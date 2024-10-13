@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.soethan.melodystream.presentation.UIState
+import com.soethan.melodystream.presentation.components.GenreTile
 import com.soethan.melodystream.presentation.components.SongListTitle
 import com.soethan.melodystream.presentation.data
 import com.soethan.melodystream.presentation.viewmodel.GenresViewModel
@@ -34,7 +35,9 @@ fun GenresView(modifier: Modifier = Modifier,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(genres.data()!!.size) {
-//                    GenresView(song = genres!!.data()!![it])
+                    GenreTile(data = genres!!.data()!![it], onClick = {
+
+                    })
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.soethan.melodystream.data.repository
 
 import android.content.Context
 import android.provider.MediaStore
+import android.util.Log
 import com.soethan.melodystream.data.model.GenreInfo
 import com.soethan.melodystream.utils.extensions.getIntValue
 import com.soethan.melodystream.utils.extensions.getLongValue
@@ -15,10 +16,15 @@ class GenreRepository @Inject constructor(@ApplicationContext val context: Conte
     override fun getAllGenres(): List<GenreInfo> {
         val genres = arrayListOf<GenreInfo>()
         val uri = MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI
-        val projection = arrayListOf(MediaStore.Audio.Genres._ID, MediaStore.Audio.Genres.NAME)
+        val projection = arrayListOf(
+            MediaStore.Audio.Genres._ID, MediaStore.Audio.Genres.NAME,
+        )
         context.queryCursor(uri, projection.toTypedArray(), showErrors = true) { cursor ->
             val id = cursor.getLongValue(MediaStore.Audio.Genres._ID)
             val title = cursor.getStringValue(MediaStore.Audio.Genres.NAME)
+//            val count = cursor.getStringValue(MediaStore.Audio.Genres._COUNT)
+//            Log.i("genrerepo", "getAllGenres: ${count}")
+
 
             if (!title.isNullOrEmpty()) {
                 val genre = GenreInfo(id = id, name = title)

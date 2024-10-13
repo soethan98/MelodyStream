@@ -56,32 +56,14 @@ fun SongListTitle(song: UiSongInfo, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-//        GlideImage(
-//            model = Uri.parse("content://media/external/audio/albumart/15"),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .width(50.dp)
-//                .height(50.dp)
-//                .clip(RoundedCornerShape(10.dp))
-//        )
-//        Image(
-//            painter = rememberImagePainter(Uri.parse("content://media/external/audio/albumart/3"), builder = {
-//                // Optional: Set Coil options as needed
-//                placeholder(R.drawable.heart) // Set a placeholder image
-//                error(R.drawable.earphones) // Set an error image
-//                crossfade(true) // Enable crossfading for smoother transitions
-//            }),
-//            contentDescription = "Album cover art",
-//            contentScale = ContentScale.Crop, // Adjust the content scale as needed
-//        )
-//
+
         AsyncImage(
 
             model =
             ImageRequest.Builder(LocalContext.current)
                 .data(song.songInfo.coverArt)
-                .error(R.drawable.heart)
-                .placeholder(R.drawable.heart)
+                .error(R.drawable.earphones)
+                .placeholder(R.drawable.earphones)
 
                 .build(),
             contentDescription = null,
