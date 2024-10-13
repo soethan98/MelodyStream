@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,16 +30,17 @@ fun AlbumsView(
     val albums by viewModel.audioList.collectAsState()
     when (albums) {
         is UIState.Content -> {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(
-                    horizontal = 16.dp, vertical = 16.dp,
-                ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(16.dp)
             ) {
                 items(albums.data()!!.size) {
                     AlbumTile(data = albums!!.data()!![it])
                 }
             }
+
         }
 
         else -> {
