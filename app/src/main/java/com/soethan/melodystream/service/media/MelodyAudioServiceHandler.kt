@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,46 +31,107 @@ class MelodyAudioServiceHandler @Inject constructor(
     }
 
 
-    fun addMediaItem(mediaItem: MediaItem){
+    fun addMediaItem(mediaItem: MediaItem) {
         player.setMediaItem(mediaItem)
         player.prepare()
     }
 
-    fun setMediaItemList(mediaItems:List<MediaItem>){
+    fun setMediaItemList(mediaItems: List<MediaItem>) {
         player.setMediaItems(mediaItems)
         player.prepare()
     }
 
+    suspend fun onMediaStateEvents(
+        playerEvent: AppPlayerEvent,
+        selectedAudioIndex: Int = -1,
+        seekPosition: Long = 0
+    ) {
+        when (playerEvent) {
+            AppPlayerEvent.Backward -> player.seekBack()
+            AppPlayerEvent.Forward -> player.seekForward()
+            AppPlayerEvent.PlayPause -> playPauseMusic()
+            AppPlayerEvent.SeekTo -> player.seekTo(seekPosition)
+            AppPlayerEvent.SeekToNext -> player.seekToNext()
+            AppPlayerEvent.SeekToPrevious -> player.seekToPrevious()
+            AppPlayerEvent.Stop -> stopProgressUpdate()
+            AppPlayerEvent.SelectMusicChange -> {
+                when (selectedAudioIndex) {
+                    player.currentMediaItemIndex -> {
+                        playPauseMusic()
+                    }
+
+                    else -> {
+                        player.seekToDefaultPosition(selectedAudioIndex)
+                        _audioState.value = AppMediaState.Playing(
+                            isPlaying = true
+                        )
+                        player.playWhenReady = true
+                        startProgressUpdate()
+                    }
+                }
+            }
+
+            is AppPlayerEvent.UpdateProgress -> {
+                player.seekTo(
+                    (player.duration * playerEvent.newProgress).toLong()
+                )
+            }
+
+        }
+    }
+
     override fun onPlaybackStateChanged(playbackState: Int) {
-       when(playbackState){
-           ExoPlayer.STATE_BUFFERING -> _audioState.value  =
-               AppMediaState.Buffering(player.currentPosition)
-           ExoPlayer.STATE_READY -> _audioState.value = AppMediaState.Ready(player.duration)
-       }
+        when (playbackState) {
+            ExoPlayer.STATE_BUFFERING -> _audioState.value =
+                AppMediaState.Buffering(player.currentPosition)
+
+            ExoPlayer.STATE_READY -> _audioState.value = AppMediaState.Ready(player.duration)
+            Player.STATE_ENDED -> {
+                // no-op
+            }
+
+            Player.STATE_IDLE -> {
+                // no-op
+            }
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         _audioState.value = AppMediaState.Playing(isPlaying = isPlaying)
-        if (isPlaying){
-            GlobalScope.launch(Dispatchers.Main){
+        if (isPlaying) {
+            GlobalScope.launch(Dispatchers.Main) {
                 startProgressUpdate()
             }
-        }else{
+        } else {
             stopProgressUpdate()
         }
     }
 
 
+    private suspend fun playPauseMusic() {
+        if (player.isPlaying) {
+            player.pause()
+            stopProgressUpdate()
+        } else {
+            player.play()
+            _audioState.update {
+                AppMediaState.Playing(isPlaying = true)
+            }
+            startProgressUpdate()
+        }
+    }
+
+
     private suspend fun startProgressUpdate() = job.run {
-        while (true){
+        while (true) {
             delay(500)
             _audioState.value = AppMediaState.Progress(player.currentPosition)
         }
     }
 
 
-    private fun stopProgressUpdate(){
+    private fun stopProgressUpdate() {
         job?.cancel()
         _audioState.value = AppMediaState.Playing(isPlaying = false)
 
@@ -92,11 +154,19 @@ sealed class AppMediaState {
 
 sealed class AppPlayerEvent {
     data object PlayPause : AppPlayerEvent()
+
+    data object SeekToNext : AppPlayerEvent()
+    data object SeekToPrevious : AppPlayerEvent()
+    data object SeekTo : AppPlayerEvent()
+
+
     data object Backward : AppPlayerEvent()
 
     data object Forward : AppPlayerEvent()
 
     data object Stop : AppPlayerEvent()
+
+    data object SelectMusicChange : AppPlayerEvent()
 
     data class UpdateProgress(val newProgress: Float) : AppPlayerEvent()
 }
