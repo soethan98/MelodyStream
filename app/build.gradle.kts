@@ -71,6 +71,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
+
 
 
     // Hilt
@@ -90,8 +92,8 @@ dependencies {
 
     /// Exoplayer
     implementation(libs.media3.exoplayer)
-    implementation(libs.media3.exoplyer.dash)
     implementation(libs.media3.ui)
+    implementation(libs.media3.session)
 
     // Lifecycle
     /// ViewModel utilities for Compose
